@@ -1,0 +1,60 @@
+Msat = 800e3
+Aex = 1.3e-11
+alpha = .01
+OutputFormat = OVF2_TEXT
+width := 50e-9
+length := 260e-9
+diam := 190e-9
+rect_length := length - width
+gap := 34e-9
+x_const := length + 2*((width+gap)*cos(pi/4)-width/2)
+y_const := x_const
+x_cellSize := 2.5e-9
+y_cellSize := 2.5e-9
+x_Grid := 500
+y_Grid := x_Grid
+rept := 4
+mesh_x := rept * x_const
+mesh_y := rept * y_const
+SetGridsize(x_Grid, y_Grid, 1)
+SetCellsize(mesh_x/x_Grid, mesh_y/y_Grid, (15e-9))
+SetPBC(3, 3, 0)
+//resizing...
+half_circle_left := circle(width).sub(rect(width, width).transl(width/2, 0, 0)).transl(-rect_length/2, 0, 0)
+half_circle_right := half_circle_left.rotz(pi)
+unit_1 := rect(rect_length, width).add(half_circle_left).add(half_circle_right)
+unit_2 := unit_1.rotz(pi / 2)
+horizontal_vertex_left := unit_1.transl(-1/2*x_const, 0, 0)
+horizontal_vertex_right := unit_1.transl(1/2*x_const, 0, 0)
+Stadiumn:=unit_1
+ww:=80e-9
+Ld := length 
+wd := ww  * 3
+Stadium1 := (Stadiumn.transl(-wd, Ld/2, 0)).rotz(-120 * pi / 180)
+Stadium2 := (Stadiumn.transl(-wd, -Ld/2, 0)).rotz(120 * pi / 180)
+H := Stadiumn.add(Stadium1).add(Stadium2)
+La := rect(5e-9, 5e-9)
+for I := -25; I <= 25; I = I + 1 {
+	{
+		for j := -25; j <= 25; j = j + 1 {
+			{
+				L2 := H.transl(j*(3/2)*(Ld+.6123*ww), sqrt(3)*(Ld+.8019*ww)*(I+j/2), 0)
+				La = La.add(L2.add(H))
+			}
+		}
+	}
+}
+setgeom(La.transl(0, 0e-9, 0))
+SnapshotFormat = "png"
+snapshot(geom)
+saveas(geom, "gg")
+m = uniform(1, 0.01, 0)
+saveas(m, "ggi")
+//theta := 0 * pi / 180
+ho := 20*1e-3
+B_ext = vector(0.000, 0, 0)
+minimize()
+relax()
+saveas(m, "finalp")
+run(2e-9)
+saveas(m, "final")
