@@ -66,30 +66,7 @@ relax()
 saveas(m, "finalp")
 run(2e-9)
 saveas(m, "final")
-f := 7 * 1e9
-dtt := 1 / (2 * 16 * f)
-Fixdt = .1e-13
-Maxerr = 1e-8
-autosave(m, dtt)
-autosave(B_demag, dtt)
-autosave(B_exch, dtt)
-print(maxangle)
-//0.2187008559703827
-tableadd(maxangle)
-TableAdd(B_ext)
-TableAdd(E_total)
-TableAdd(E_demag)
-TableAdd(E_exch)
-TableAdd(E_therm)
-TableAdd(E_Zeeman)
-TableAdd(B_eff)
-TableAdd(B_demag)
-TableAdd(B_exch)
-tableautosave(1e-12)
-MFMLift = 10e-9
-saveas(MFM, "lift_10nm_k")
-B_ext = vector(0.000+ho*sin(2*pi*f*(t-0e-9)), 0, 0)
-run(10e-9)
+
 //********************************************************************//
 //Please cite the following references, relevant for your simulation. //
 //See bibtex file in output folder for justification.                 //
